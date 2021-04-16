@@ -6,15 +6,20 @@ const Video=require('../models/video');
 
 router.post('/savevideo',(req,res)=>{
     console.log(req.body);
-   const {VideoUrl,ImageUrl,writeup}=req.body;
-//    const postedBy=window.localStorage.getItem('token');
-   const video=new Video({
-       url:VideoUrl,
+   const {VideoUrl,ImageUrl,writeup,interest}=req.body;
+   var videoUnique={
+       videoUrl:VideoUrl,
        thumbnailurl:ImageUrl,
-       writeup:writeup,
+   }
+   const video=new Video({
+       writeup,
+       interest
    })
+
+   video.video.push(videoUnique);
+
    video.save().then((data)=>{
-       res.json({data})
+       res.json(data)
    }).
    catch((err)=>
    console.log(err)

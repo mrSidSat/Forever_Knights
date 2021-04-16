@@ -1,17 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import NavBar from './home/Navbar';
 import Footer from './home/Footer';
-import { Link } from "react-router-dom";
-import { useDispatch } from 'react-redux'
+import { Link,Redirect} from "react-router-dom";
+import { useDispatch,useSelector } from 'react-redux'
 import { loginUser, registeruser } from '../redux/actions/signin_';
+import history from '../redux/actions/history';
 // import M from 'materialize-css'
-
 function SignUp() {
-    const [name, setName] = useState("");
+    const authToken = useSelector((state) => state.authReducer.isAuthenticated);
+    const [UserName, setUserName] = useState("");
     const [email, setEmail] = useState("");
     const [usertype, setUsertype] = useState("");
+    const [isAuth,setAuth]=useState(false)
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
+    const abc=useSelector(state=>state.isAuthenticated);
+    useEffect(() => {
+        // if(authToken==true)
+        // {
+            console.log("HELLO")
+        // <Redirect to="/home" />
+        
+    }, [authToken])   
     const toggle = (e) => {
         console.log(e);
         e.preventDefault();
@@ -44,14 +54,15 @@ function SignUp() {
         // console.log(e);
         e.preventDefault();
         const data = {
-            name,
+            UserName,
             email,
             usertype,
             password
         }
         console.log(data);
-        //  dispatch(registeruser(data));
+         dispatch(registeruser(data))
     }
+
     const onSubmitsignin = (e) => {
         console.log(e);
         e.preventDefault();
@@ -59,17 +70,13 @@ function SignUp() {
             email,
             password
         }
-        //  dispatch(loginUser(data));
     }
-    const xyz = (e) => {
-        console.log(e);
-    }
-
+  
     return (
     
            <div style={{padding:"5.5% 0.5%",backgroundImage:`url("https://i.pinimg.com/474x/6f/78/82/6f788269f05c97b48355ae297d304787.jpg")`}}>
             <div style={{ backgroundColor: "rgb(255,255,255,255)" ,marginRight:"5%",marginLeft:"5%"}} className="shadow-lg " >
-                <div className=" container " style={{padding:"45px"}}>
+                <div className=" container-fluid " style={{padding:"45px"}}>
                     <div className="row pd-8">
                         <div data-aos="fade-right" className="col-md-6 col-sm-12">
                             <img className=" " style={{ width: "100%", height: "100%" }} src="/Images/add.jpg" />
@@ -80,7 +87,7 @@ function SignUp() {
                                     <form>
                                         <div className="mb-3">
                                             <label for="exampleInputEmail1" className="form-label">UserName</label>
-                                            <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={e => setName(e.target.value)} />
+                                            <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={e => setUserName(e.target.value)} />
                                         </div>
                                         <div className="mb-3">
                                             <label for="exampleInputEmail1" className="form-label">Email address</label>
@@ -105,7 +112,7 @@ function SignUp() {
                                 </div>
                             </div>
                             <div id="signin">
-                                <div className="container p-2">
+                                <div className="container-fluid p-2">
                                     <form>
                                         <div className="mb-3">
                                             <label for="exampleInputEmail1" className="form-label">Email address</label>
